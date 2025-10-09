@@ -18,16 +18,16 @@
     value: RequestOption;
   }[] = [
     {
-      label: "Solicitar Período Gratuito",
-      value: "requestFreeTrial",
+      label: "Solicitar Plano",
+      value: "requestPlan",
     },
     {
       label: "Solicitar Demonstração",
       value: "requestDemo",
     },
     {
-      label: "Solicitar Plano",
-      value: "requestPlan",
+      label: "Solicitar Período Gratuito",
+      value: "requestFreeTrial",
     },
   ];
 
@@ -251,6 +251,7 @@
               >
               <option class="form-select-option" value="premium">Premium</option
               >
+              <option class="form-select-option" value="custom">Custom</option>
             </select>
           </div>
         {/if}

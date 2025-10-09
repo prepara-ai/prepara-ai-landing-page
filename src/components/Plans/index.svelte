@@ -20,7 +20,7 @@
     >
       <section slot="children">
         <p class="plan-price">
-          <strong class="plan-price-value">R$ 69,00</strong>
+          <strong class="plan-price-value">R$ 72,90</strong>
           <span>por mês</span>
           <Button
             text="Solicitar plano"
@@ -67,7 +67,7 @@
     >
       <section slot="children">
         <p class="plan-price">
-          <strong class="plan-price-value">R$ 199,00</strong>
+          <strong class="plan-price-value">R$ 209,90</strong>
           <span>por mês</span>
           <Button
             text="Solicitar plano"
@@ -233,6 +233,57 @@
             Suporte por <strong>e-mail</strong> em até <strong>8h</strong>
           </li>
           <li>Suporte por <strong>WhatsApp</strong></li>
+        </ul>
+      </section>
+    </Content>
+
+    <Content title="Custom" backgroundColor="#333" textColor="#fff" isAnimated>
+      <section slot="children">
+        <p class="plan-price">
+          <strong class="plan-price-value">Sob Consulta</strong>
+          <span>Plano Personalizado</span>
+          <Button
+            text="Solicitar proposta"
+            color="success"
+            onClick={() => {
+              onRequestPlan("custom");
+            }}
+            trackingDetails={{
+              name: "request_plan_button",
+              value: "custom",
+            }}
+          />
+        </p>
+
+        <hr />
+
+        <ul class="plan-details">
+          <li>
+            Cadastro de <strong>alunos, admins e segmentos</strong> sem limite
+          </li>
+          <li>
+            <strong>Ambiente dedicado</strong> e infraestrutura personalizada
+          </li>
+          <li>
+            <strong>Funcionalidades sob demanda</strong>, desenvolvidas conforme
+            necessidade
+          </li>
+          <li>
+            Integração avançada via <strong>API</strong> e suporte a sistemas externos
+          </li>
+          <li>
+            <strong>Análises e relatórios personalizados</strong> conforme necessidade
+          </li>
+          <li>
+            Criação de <strong>simulados e questões</strong> totalmente customizada
+          </li>
+          <li>
+            Acompanhamento de <strong>desempenho detalhado</strong> com dashboards
+            exclusivos
+          </li>
+          <li>
+            <strong>Suporte prioritário</strong> por e-mail e WhatsApp
+          </li>
         </ul>
       </section>
     </Content>
