@@ -161,7 +161,7 @@
       trackingDetails={{
         name: "lead_submission",
         method: "email",
-        request_type: $clientRequestOptionSelected,
+        request_type: `demo_request_plan_${selectedPlanValue || "not_selected"}`,
       }}
     />
   </form>

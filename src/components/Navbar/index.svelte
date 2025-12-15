@@ -26,15 +26,6 @@
         }}>Agendar Demonstração</a
       >
     </li>
-
-    <li>
-      <a
-        href="#periodo-gratuito"
-        on:click={() => {
-          clientRequestOptionSelected.set("requestFreeTrial");
-        }}>Período gratuito</a
-      >
-    </li>
   </ul>
 </nav>
 
