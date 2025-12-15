@@ -1,6 +1,4 @@
 <script lang="ts">
-  export let onSelectClientOption: () => void;
-
   import type { SvelteComponent } from "svelte";
   import {
     clientRequestOptionSelected,
@@ -12,34 +10,6 @@
   import Toast from "../Toast/root.svelte";
 
   let toast: SvelteComponent;
-
-  const clientRequestOptions: {
-    label: string;
-    value: RequestOption;
-  }[] = [
-    {
-      label: "Solicitar Plano",
-      value: "requestPlan",
-    },
-    {
-      label: "Solicitar Demonstração",
-      value: "requestDemo",
-    },
-    {
-      label: "Solicitar Período Gratuito",
-      value: "requestFreeTrial",
-    },
-  ];
-
-  const selectClientOption = (chosenValue: RequestOption) => {
-    clientRequestOptionSelected.set(chosenValue);
-
-    if (chosenValue !== "requestPlan") {
-      selectedPlan.set(null);
-    }
-
-    onSelectClientOption();
-  };
 
   const moveToRequestedCard = (chosenValue: RequestOption) => {
     const cardGroup = document.getElementById("form-input-card-group");
@@ -61,66 +31,14 @@
     }
   };
 
-  const getClientRequestButtonText = (
-    currentClientRequestOptionSelected: RequestOption
-  ) => {
-    if (currentClientRequestOptionSelected === "requestDemo") {
-      return "SOLICITAR";
-    }
-
-    if (currentClientRequestOptionSelected === "requestFreeTrial") {
-      return "SOLICITAR";
-    }
-
-    if (currentClientRequestOptionSelected === "requestPlan") {
-      return "SOLICITAR";
-    }
-
-    return "";
-  };
-
   let clientName = "";
   let clientEmail = "";
-  let clientPhoneNumber = "";
-  let clientEnvironmentName = "";
-  let clientKnowledgeAreas = "";
   let isSendingEmail = false;
 
-  const handleIsFormDisabled = (
-    requestOptionSelected: RequestOption | null,
-    selectedPlan: PlanType | null,
-    name: string,
-    email: string,
-    phoneNumber: string,
-    environmentName: string,
-    knowledgeAreas: string
-  ) => {
-    if (requestOptionSelected === "requestPlan") {
-      return !!(
-        !selectedPlan ||
-        !name ||
-        !email ||
-        !phoneNumber ||
-        !environmentName ||
-        !knowledgeAreas
-      );
-    }
+  const handleIsFormDisabled = (name: string, email: string) => {
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-    if (requestOptionSelected === "requestDemo") {
-      return !!(!name || !email || !phoneNumber);
-    }
-
-    if (requestOptionSelected === "requestFreeTrial") {
-      return !!(
-        !name ||
-        !email ||
-        !phoneNumber ||
-        !environmentName ||
-        !knowledgeAreas
-      );
-    }
-
-    return true;
+    return !!(!name || !isEmailValid);
   };
 
   const resetForm = () => {
@@ -128,20 +46,9 @@
     selectedPlan.set(null);
     clientName = "";
     clientEmail = "";
-    clientPhoneNumber = "";
-    clientEnvironmentName = "";
-    clientKnowledgeAreas = "";
   };
 
-  $: isFormDisabled = handleIsFormDisabled(
-    $clientRequestOptionSelected,
-    $selectedPlan,
-    clientName,
-    clientEmail,
-    clientPhoneNumber,
-    clientEnvironmentName,
-    clientKnowledgeAreas
-  );
+  $: isFormDisabled = handleIsFormDisabled(clientName, clientEmail);
 
   const sendEmail = async () => {
     try {
@@ -159,9 +66,6 @@
             selectedPlan: $selectedPlan,
             clientName,
             clientEmail,
-            clientPhoneNumber,
-            clientEnvironmentName,
-            clientKnowledgeAreas,
           }),
         }
       );
@@ -171,7 +75,12 @@
       isSendingEmail = false;
 
       if (status === 200) {
-        toast.showToast("success", 3500, "Solicitação enviada com sucesso!");
+        toast.showToast(
+          "success",
+          5000,
+          "Pedido de demonstração enviado!",
+          "Enviamos um e-mail com os próximos passos. Em breve entraremos em contato."
+        );
         resetForm();
         return;
       }
@@ -205,144 +114,56 @@
 
 <div id="schedule-demo-form-container" class="form-container">
   <form class="form-card">
-    <h1 class="form-title">Comece agora a usar a plataforma</h1>
+    <h1 class="form-title">Conheça agora nossa plataforma</h1>
+
+    <h2>
+      {#if selectedPlanValue}
+        Você escolheu o plano {selectedPlanValue.toUpperCase()}. Quer ver como
+        ele funciona na prática?
+      {:else}
+        Quer ver como ela funciona na prática?
+      {/if}
+    </h2>
+
+    <p class="form-microcopy">Demonstração gratuita. Sem compromisso.</p>
 
     <section class="form-inputs-container">
-      <div id="form-input-card-group" class="form-input-card-group">
-        {#each clientRequestOptions as { value, label }}
-          <button
-            id="form-input-card-{value}"
-            class="form-input-card {$clientRequestOptionSelected
-              ? $clientRequestOptionSelected === value
-                ? 'form-input-card-selected'
-                : 'form-input-card-not-selected'
-              : ''}"
-            type="button"
-            on:click={() => {
-              selectClientOption(value);
-              moveToRequestedCard(value);
-            }}
-          >
-            <span class="form-input-card-text">{label}</span>
-          </button>
-        {/each}
+      <div class="form-input-container">
+        <label class="form-label" for="client-name">Seu Nome</label>
+        <input
+          class="form-input"
+          id="client-name"
+          type="text"
+          placeholder="Seu Nome"
+          bind:value={clientName}
+          disabled={isSendingEmail}
+        />
       </div>
 
-      {#if $clientRequestOptionSelected}
-        {#if $clientRequestOptionSelected === "requestPlan"}
-          <div class="form-input-container">
-            <label class="form-label" for="plans">Plano Escolhido</label>
-            <select
-              id="plans"
-              class="form-select"
-              name="plans"
-              bind:value={selectedPlanValue}
-              on:change={() => selectedPlan.set(selectedPlanValue)}
-            >
-              <option class="form-select-option" value=""></option>
-              <option class="form-select-option" value="individual"
-                >Individual</option
-              >
-              <option class="form-select-option" value="essential"
-                >Essencial</option
-              >
-              <option class="form-select-option" value="advanced"
-                >Avançado</option
-              >
-              <option class="form-select-option" value="premium">Premium</option
-              >
-              <option class="form-select-option" value="custom">Custom</option>
-            </select>
-          </div>
-        {/if}
-
-        <div class="form-input-container">
-          <label class="form-label" for="client-name">Digite o seu Nome</label>
-          <input
-            class="form-input"
-            id="client-name"
-            type="text"
-            placeholder="João Silva"
-            bind:value={clientName}
-            disabled={isSendingEmail}
-          />
-        </div>
-
-        <div class="form-input-container">
-          <label class="form-label" for="client-email"
-            >Digite o seu melhor Email</label
-          >
-          <input
-            class="form-input"
-            id="client-email"
-            type="email"
-            placeholder="joaosilva@gmail.com"
-            bind:value={clientEmail}
-            disabled={isSendingEmail}
-          />
-        </div>
-
-        <div class="form-input-container">
-          <label class="form-label" for="client-phone-number"
-            >Digite o seu WhatsApp</label
-          >
-          <input
-            class="form-input"
-            id="client-phone-number"
-            type="tel"
-            placeholder="81 92222-2222"
-            bind:value={clientPhoneNumber}
-            disabled={isSendingEmail}
-          />
-        </div>
-
-        {#if ["requestPlan", "requestFreeTrial"].includes($clientRequestOptionSelected)}
-          <div class="form-input-container">
-            <label class="form-label" for="client-environment-name"
-              >Escolha um nome para o seu Ambiente</label
-            >
-            <input
-              class="form-input"
-              id="client-environment-name"
-              type="text"
-              placeholder="Matemática com João"
-              bind:value={clientEnvironmentName}
-              disabled={isSendingEmail}
-            />
-          </div>
-
-          <div class="form-input-container">
-            <label class="form-label" for="client-knowledge-areas"
-              >Qual é o foco do seu ensino?</label
-            >
-            <textarea
-              class="form-input"
-              id="client-knowledge-areas"
-              placeholder="ENEM, Português, Matemática, Física, Concursos Militares..."
-              rows="5"
-              bind:value={clientKnowledgeAreas}
-              disabled={isSendingEmail}
-            />
-          </div>
-        {/if}
-      {:else}
-        <div class="empty-section"></div>
-      {/if}
+      <div class="form-input-container">
+        <label class="form-label" for="client-email">Seu melhor Email</label>
+        <input
+          class="form-input"
+          id="client-email"
+          type="email"
+          placeholder="seunome@email.com"
+          bind:value={clientEmail}
+          disabled={isSendingEmail}
+        />
+      </div>
     </section>
 
-    {#if $clientRequestOptionSelected}
-      <Button
-        isDisabled={isFormDisabled || isSendingEmail}
-        text={isSendingEmail
-          ? "ENVIANDO SOLICITAÇÃO..."
-          : getClientRequestButtonText($clientRequestOptionSelected)}
-        color="success"
-        onClick={sendEmail}
-        trackingDetails={{
-          name: "send_email_button",
-        }}
-      />
-    {/if}
+    <Button
+      isDisabled={isFormDisabled || isSendingEmail}
+      text={"Quero ver a demonstração"}
+      color="success"
+      onClick={sendEmail}
+      trackingDetails={{
+        name: "lead_submission",
+        method: "email",
+        request_type: $clientRequestOptionSelected,
+      }}
+    />
   </form>
 </div>
 
@@ -370,6 +191,13 @@
     color: #333;
     text-align: center;
     font-size: 2.5rem;
+  }
+
+  .form-microcopy {
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    color: #6b7280;
   }
 
   .form-inputs-container {

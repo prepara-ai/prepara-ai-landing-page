@@ -61,10 +61,14 @@
       </p>
 
       <Button
-        text="Comece agora a usar a plataforma"
+        text="Comece conhecendo os planos"
         color="success"
         onClick={scrollIntoOurPlans}
-        trackingDetails={{ name: "start_using_platform_button" }}
+        trackingDetails={{
+          name: "cta_click",
+          cta_type: "start_using_platform_button",
+          cta_text: "Comece conhecendo os planos",
+        }}
       />
     </div>
   </div>
@@ -136,7 +140,7 @@
     }}
   />
 
-  <ScheduleDemoForm onSelectClientOption={scrollIntoScheduleForm} />
+  <ScheduleDemoForm />
 </main>
 
 <style>

@@ -7,7 +7,10 @@
   export let onClick: () => void;
   export let trackingDetails: {
     name: string;
-    value?: string | number;
+    method?: string;
+    cta_type?: string;
+    cta_text?: string;
+    request_type?: string;
   } | null;
 </script>
 
@@ -18,8 +21,9 @@
   on:click={() => {
     onClick();
     if (trackingDetails) {
-      const { name, value = 1 } = trackingDetails;
-      trackClickOnButton(name, value);
+      const { name, method, cta_type, cta_text, request_type } =
+        trackingDetails;
+      trackClickOnButton(name, method, cta_type, cta_text, request_type);
     }
   }}>{@html text}</button
 >

@@ -23,14 +23,15 @@
           <strong class="plan-price-value">R$ 72,90</strong>
           <span>por mês</span>
           <Button
-            text="Solicitar plano"
+            text="Quero conhecer o plano"
             color="success"
             onClick={() => {
               onRequestPlan("individual");
             }}
             trackingDetails={{
-              name: "request_plan_button",
-              value: "individual",
+              name: "cta_click",
+              cta_type: "request_individual_plan_button",
+              cta_text: "Quero conhecer o plano",
             }}
           />
         </p>
@@ -70,14 +71,15 @@
           <strong class="plan-price-value">R$ 209,90</strong>
           <span>por mês</span>
           <Button
-            text="Solicitar plano"
+            text="Quero conhecer o plano"
             color="success"
             onClick={() => {
               onRequestPlan("essential");
             }}
             trackingDetails={{
-              name: "request_plan_button",
-              value: "essential",
+              name: "cta_click",
+              cta_type: "request_essential_plan_button",
+              cta_text: "Quero conhecer o plano",
             }}
           />
         </p>
@@ -124,14 +126,15 @@
           <strong class="plan-price-value">R$ 499,00</strong>
           <span>por mês</span>
           <Button
-            text="Solicitar plano"
+            text="Quero conhecer o plano"
             color="success"
             onClick={() => {
               onRequestPlan("advanced");
             }}
             trackingDetails={{
-              name: "request_plan_button",
-              value: "advanced",
+              name: "cta_click",
+              cta_type: "request_advanced_plan_button",
+              cta_text: "Quero conhecer o plano",
             }}
           />
         </p>
@@ -179,14 +182,15 @@
           <strong class="plan-price-value">R$ 999,00</strong>
           <span>por mês</span>
           <Button
-            text="Solicitar plano"
+            text="Quero conhecer o plano"
             color="success"
             onClick={() => {
               onRequestPlan("premium");
             }}
             trackingDetails={{
-              name: "request_plan_button",
-              value: "premium",
+              name: "cta_click",
+              cta_type: "request_premium_plan_button",
+              cta_text: "Quero conhecer o plano",
             }}
           />
         </p>
@@ -243,14 +247,15 @@
           <strong class="plan-price-value">Sob Consulta</strong>
           <span>Plano Personalizado</span>
           <Button
-            text="Solicitar proposta"
+            text="Quero um plano personalizado"
             color="success"
             onClick={() => {
               onRequestPlan("custom");
             }}
             trackingDetails={{
-              name: "request_plan_button",
-              value: "custom",
+              name: "cta_click",
+              cta_type: "request_custom_plan_button",
+              cta_text: "Quero um plano personalizado",
             }}
           />
         </p>
