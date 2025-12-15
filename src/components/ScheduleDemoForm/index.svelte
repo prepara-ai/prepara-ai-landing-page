@@ -77,7 +77,7 @@
       if (status === 200) {
         toast.showToast(
           "success",
-          5000,
+          6000,
           "Pedido de demonstração enviado!",
           "Enviamos um e-mail com os próximos passos. Em breve entraremos em contato."
         );
